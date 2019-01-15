@@ -1,0 +1,92 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Instagram Story API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/stories": {
+      "get": {
+        "tags": [
+          "Story"
+        ],
+        "summary": "Get stories of user by user name",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List stories if user exist, can empty"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/highlights": {
+      "get": {
+        "tags": [
+          "Highlight"
+        ],
+        "summary": "Get highlights of user by user name",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List highlights if user exist, can empty"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/highlights/{highlightId}": {
+      "get": {
+        "tags": [
+          "Highlight"
+        ],
+        "summary": "Get detail of a highlight",
+        "parameters": [
+          {
+            "name": "highlightId",
+            "in": "path",
+            "description": "id at format highlight:17871404119199370",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Highlight object"
+          },
+          "404": {
+            "description": "Id not found"
+          }
+        }
+      }
+    }
+  }
+}

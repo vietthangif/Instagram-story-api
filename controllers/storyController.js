@@ -5,14 +5,20 @@ var Account = Client.Account;
 
 exports.storiesByName = function (req, res) {
     var session = req.session;
-    var username = req.params ? req.params.username : null;
+    var username = typeof req.query.username === 'string' ? req.query.username : null;
+
+    if (!username) {
+        res.status(400);
+        res.send('username is required');
+        return;
+    }
 
     Account.searchForUser(session, username)
         .then(function (account) {
             return (new UserStory(session, [account.id])).get()
         })
-        .then(function (medias) {
-            res.send(_.map(medias, function (media) {
+        .then(function (mediaList) {
+            res.send(_.map(mediaList, function (media) {
                 return media.getParams();
             }));
         })
@@ -25,5 +31,5 @@ exports.storiesByName = function (req, res) {
                 res.status(500);
                 res.send('Internal Server Error');
             }
-        })
+        });
 };

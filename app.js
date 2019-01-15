@@ -9,6 +9,9 @@ var indexRouter = require('./routes/index');
 var storyRouter = require('./routes/story');
 var highlightRouter = require('./routes/highlight');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -21,6 +24,7 @@ app.use(instaCookieMiddleware());
 app.use('/', indexRouter);
 app.use('/stories', storyRouter);
 app.use('/highlights', highlightRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 module.exports = app;
