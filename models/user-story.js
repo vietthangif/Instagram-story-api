@@ -27,6 +27,12 @@ UserStory.prototype.get = function () {
         .signPayload()
         .send()
         .then(function (data) {
+            if (!data.hasOwnProperty('reels')
+                || !data.reels
+                || !data.reels.hasOwnProperty(that.userIds)
+                || !data.reels[that.userIds].items) {
+                return [];
+            }
             return _.map(data.reels[that.userIds].items, function (medium) {
                 return new Media(that.session, medium);
             });
