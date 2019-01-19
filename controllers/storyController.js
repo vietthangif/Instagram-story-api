@@ -1,10 +1,10 @@
 var _ = require('lodash');
 var UserStory = require('../models/user-story');
 var Client = require('instagram-private-api').V1;
-var InstaError = require('../models/insta-error');
 var Account = Client.Account;
+var ErrorStack = require('../modules/error/error-stack');
 
-exports.storiesByName = function (req, res) {
+function storiesByName(req, res) {
     var session = req.session;
     var username = typeof req.query.username === 'string' ? req.query.username : null;
 
@@ -23,7 +23,9 @@ exports.storiesByName = function (req, res) {
                 return media.getParams();
             }));
         })
-        .catch(function (error) {
-            return InstaError.toHttpResponse(error, res);
+        .catch(function (err) {
+            ErrorStack.stack(err, req, res, storiesByName);
         });
-};
+}
+
+exports.storiesByName = storiesByName;

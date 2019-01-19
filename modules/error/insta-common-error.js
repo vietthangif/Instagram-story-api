@@ -1,10 +1,10 @@
 var Client = require('instagram-private-api').V1;
 
-function InstaError(error) {
+function InstaCommonError(error) {
     this.error = error;
 }
 
-InstaError.prototype.toHttpResponse = function () {
+InstaCommonError.prototype.toHttpResponse = function () {
     if (this.error instanceof Client.Exceptions.PrivateUserError) {
         return {
             code: 422,
@@ -33,11 +33,11 @@ InstaError.prototype.toHttpResponse = function () {
     }
 };
 
-InstaError.toHttpResponse = function(err, res) {
-    var instaError  = new InstaError(err);
+InstaCommonError.hanleErrorResponse = function (err, res) {
+    var instaError = new InstaCommonError(err);
     var httpRes = instaError.toHttpResponse();
     res.status(httpRes.code);
     res.send(httpRes.data);
 };
 
-module.exports = InstaError;
+module.exports = InstaCommonError;

@@ -2,9 +2,9 @@ var _ = require('lodash');
 var Highlight = require('../models/highlight');
 var Client = require('instagram-private-api').V1;
 var Account = Client.Account;
-var InstaError = require('../models/insta-error');
+var ErrorStack = require('../modules/error/error-stack');
 
-exports.highlightsByUserName = function (req, res) {
+function highlightsByUserName(req, res) {
     var session = req.session;
     var username = typeof req.query.username === 'string' ? req.query.username : null;
 
@@ -23,18 +23,21 @@ exports.highlightsByUserName = function (req, res) {
                 return media.getParams();
             }));
         })
-        .catch(function (error) {
-           return InstaError.toHttpResponse(error, res);
+        .catch(function (err) {
+            ErrorStack.stack(err, req, res, highlightsByUserName);
         })
-};
+}
 
-exports.highlightById = function (req, res) {
+function highlightById(req, res) {
     var session = req.session;
     var highlightId = req.params ? req.params.highlightId : null;
 
     Highlight.getDetail(session, highlightId)
         .then(res.send)
-        .catch(function (error) {
-           return InstaError.toHttpResponse(error, res);
+        .catch(function (err) {
+            ErrorStack.stack(err, req, res, highlightById);
         })
-};
+}
+
+exports.highlightsByUserName = highlightsByUserName;
+exports.highlightById = highlightById;
