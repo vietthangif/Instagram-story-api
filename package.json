@@ -10,6 +10,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "helmet": "3.15.0",
     "instagram-private-api": "^0.6.8",
     "morgan": "~1.9.0",
     "swagger-ui-express": "4.0.2"
