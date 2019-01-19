@@ -2,10 +2,17 @@ var _ = require('lodash');
 var Highlight = require('../models/highlight');
 var Client = require('instagram-private-api').V1;
 var Account = Client.Account;
+var InstaError = require('../models/insta-error');
 
 exports.highlightsByUserName = function (req, res) {
     var session = req.session;
     var username = typeof req.query.username === 'string' ? req.query.username : null;
+
+    if (!username) {
+        res.status(400);
+        res.send('username is required');
+        return;
+    }
 
     Account.searchForUser(session, username)
         .then(function (account) {
@@ -17,14 +24,7 @@ exports.highlightsByUserName = function (req, res) {
             }));
         })
         .catch(function (error) {
-            if (error instanceof Client.Exceptions.IGAccountNotFoundError) {
-                res.status(404);
-                res.send('Account not found');
-            } else {
-                console.error(error);
-                res.status(500);
-                res.send('Internal Server Error');
-            }
+           return InstaError.toHttpResponse(error, res);
         })
 };
 
@@ -33,17 +33,8 @@ exports.highlightById = function (req, res) {
     var highlightId = req.params ? req.params.highlightId : null;
 
     Highlight.getDetail(session, highlightId)
-        .then(function (highlight) {
-            res.send(highlight);
-        })
+        .then(res.send)
         .catch(function (error) {
-            if (error instanceof Client.Exceptions.IGAccountNotFoundError) {
-                res.status(404);
-                res.send('Account not found');
-            } else {
-                console.error(error);
-                res.status(500);
-                res.send('Internal Server Error');
-            }
+           return InstaError.toHttpResponse(error, res);
         })
 };

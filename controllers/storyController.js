@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var UserStory = require('../models/user-story');
 var Client = require('instagram-private-api').V1;
+var InstaError = require('../models/insta-error');
 var Account = Client.Account;
 
 exports.storiesByName = function (req, res) {
@@ -23,13 +24,6 @@ exports.storiesByName = function (req, res) {
             }));
         })
         .catch(function (error) {
-            if (error instanceof Client.Exceptions.IGAccountNotFoundError) {
-                res.status(404);
-                res.send('Account not found');
-            } else {
-                console.error(error);
-                res.status(500);
-                res.send('Internal Server Error');
-            }
+            return InstaError.toHttpResponse(error, res);
         });
 };
