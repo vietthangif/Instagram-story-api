@@ -4,7 +4,6 @@
     "title": "Instagram Story API",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
   "basePath": "/",
   "consumes": [
     "application/json"
