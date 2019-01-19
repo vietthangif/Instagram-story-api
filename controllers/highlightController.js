@@ -33,7 +33,9 @@ function highlightById(req, res) {
     var highlightId = req.params ? req.params.highlightId : null;
 
     Highlight.getDetail(session, highlightId)
-        .then(res.send)
+        .then(function (highlight) {
+            res.send(highlight);
+        })
         .catch(function (err) {
             ErrorStack.stack(err, req, res, highlightById);
         })
