@@ -2,5 +2,5 @@
 
 $(aws ecr get-login --no-include-email --region us-east-1)
 docker build -t instagram-story-api .
-docker tag instagram-story-api:latest 553127941558.dkr.ecr.us-east-1.amazonaws.com/instagram-story-api:latest
-docker push 553127941558.dkr.ecr.us-east-1.amazonaws.com/instagram-story-api:latest
+docker tag instagram-story-api:latest 375832317211.dkr.ecr.us-east-1.amazonaws.com/instagram-story-api:latest
+docker push 375832317211.dkr.ecr.us-east-1.amazonaws.com/instagram-story-api:latest
